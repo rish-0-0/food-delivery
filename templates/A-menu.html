@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>A Menu</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <!--<link href="a-menu.css" rel="stylesheet">-->
+    </head>
+    <body>
+        <div class="container" id="full-page">
+            <div class="row">
+                <div class="col-lg-4 d-sm-block" id="your-cart">
+                    <p style="display:block" id="body">Your cart is empty</p>
+                    <button class="orderButton" id="submit" type='button'>Confirm and Order</button>
+                </div>
+                <div class="col-lg-8" id="A-menu">
+                    <div class="container">
+                        <div class="item" id="xyz">
+                            <p>Item of ID: xyz</p>
+                            <p>Name of Item: name yO</p>
+                            <button type='button' class='addButton' onclick="push()">Add!</button>
+                        </div>
+                        Yo
+                    </div>
+                    <div class="container">
+                        <!-- <div class="menu-item">
+                            <span>Checkbox</span><span>Title</span>
+                        </div> -->
+                        Yo
+                    </div>
+                    <div class="container">
+                        <!-- <div class="menu-item">
+                            <span>Checkbox</span><span>Title</span>
+                        </div> -->
+                        Yo
+                    </div>
+                    <div class="container">
+                        <!-- <div class="menu-item">
+                            <span>Checkbox</span><span>Title</span>
+                        </div> -->
+                        Yo
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Scripts related to BOOTSTRAP -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script>
+            //Receive menu
+
+            console.log("YAY");
+            let items = [];
+            let menu={'command':'a_menu'};
+            menu = JSON.stringify(menu);
+            console.log("YAY");
+            $.ajaxSetup({
+                contentType: "application/json; charset=utf-8"
+            });
+            $(document).ready(function() {
+                    let item="";
+                    console.log('FICL');
+                    $.ajax({
+                        url: 'http://10.30.8.75:7050/',
+                        type: 'POST',
+                        dataType:'json',
+                        data:menu,
+                        success: function(msg) {
+                            // alert('wow'+msg);
+                            console.log(msg.items);
+                            for(let i=0;i<msg.items.length;++i) {
+                                items.push(msg.items[i]);
+                            }
+                        }
+                    });
+                    // document.write(item);
+                console.log("HERE");
+
+            });
+            //TODO: Order()
+            //TODO: Push()
+            console.log(items);
+
+            //write push function
+            function push(id) {
+                items.push(menu.id);
+            }
+            order = {"items": items} //JSON
+            //Send post request 
+            const url="/";
+            $(document).ready(function() {
+                $('#submit').click(function() {
+                    $.post(url,order,function(data,status) {
+                        alert("Data: "+data+"\nStatus: "+status);
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
