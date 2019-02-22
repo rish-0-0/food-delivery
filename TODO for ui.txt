@@ -1,0 +1,24 @@
+what should be on each page
+first page: {
+A/C
+}
+second page:{
+cart of ordered items
+list of all available items
+}
+third page:{
+####all the below values will be sent from server, just need to display####
+list of ordered items with quantity
+cost of only items
+cost of packing
+cost of delivery
+total cost
+####collect the below values from the user####
+name,room number(with hostel),phone,preferred payment method(google pay, paytm),phone/upi ID associated with the payment method
+}
+fourth page:{
+order id
+#### display the following message####
+order has been received , you will recieve a request for the payment of the order. Once the payment is confirmed, 
+your order will be placed and you will receive a whatsapp/text message saying your order is confirmed.
+please note that the order will not be placed until the payment is complete.

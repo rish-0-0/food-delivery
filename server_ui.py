@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def handle_request():
-    print('1')
     response = ""
     json_response = ""
 
@@ -16,12 +15,8 @@ def handle_request():
 
     req = request.get_json()
 
-    print(req)
-
     # Get the command from the json
     action = req.get('command')
-
-    print(action)
 
     if action == 'a_menu':
         response = ui_handler.a_menu()
@@ -30,6 +25,14 @@ def handle_request():
 
     elif action == 'c_menu':
         json_response = jsonify(ui_handler.c_menu())
+
+    elif action == 'order_dets':
+        params = req.get('params')
+        json_response = jsonify(ui_handler.order_dets(params))
+
+    elif action == 'details':
+        params = req.get('params')
+        json_response = jsonify(ui_handler.details(params))
 
     return json_response
 
