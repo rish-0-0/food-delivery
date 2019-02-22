@@ -13,32 +13,7 @@
                     <button class="orderButton" id="submit" type='button'>Confirm and Order</button>
                 </div>
                 <div class="col-lg-8" id="A-menu">
-                    <div class="container">
-                        <div class="item" id="xyz">
-                            <p>Item of ID: xyz</p>
-                            <p>Name of Item: name yO</p>
-                            <button type='button' class='addButton' onclick="push()">Add!</button>
-                        </div>
-                        Yo
-                    </div>
-                    <div class="container">
-                        <!-- <div class="menu-item">
-                            <span>Checkbox</span><span>Title</span>
-                        </div> -->
-                        Yo
-                    </div>
-                    <div class="container">
-                        <!-- <div class="menu-item">
-                            <span>Checkbox</span><span>Title</span>
-                        </div> -->
-                        Yo
-                    </div>
-                    <div class="container">
-                        <!-- <div class="menu-item">
-                            <span>Checkbox</span><span>Title</span>
-                        </div> -->
-                        Yo
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -74,27 +49,21 @@
                         }
                     });
                     // document.write(item);
+                console.log(items);
                 console.log("HERE");
-
+                for(var i=0;i<items.length;++i) {
+                    $('<div class="food">'+items[i]+'<button type="button" class="add"'+'id=\"'+items[i]+'\"'+'</div>').appendTo('#A-menu');
+                }
+                //Now let's make a counter
+                order = {}
+                for(var i=0;i<items.length;++i) {
+                    order[items[i]]=0;
+                }
+                
             });
-            //TODO: Order()
-            //TODO: Push()
-            console.log(items);
+            // order = {"items": items} //JSON
 
-            //write push function
-            function push(id) {
-                items.push(menu.id);
-            }
-            order = {"items": items} //JSON
             //Send post request 
-            const url="/";
-            $(document).ready(function() {
-                $('#submit').click(function() {
-                    $.post(url,order,function(data,status) {
-                        alert("Data: "+data+"\nStatus: "+status);
-                    });
-                });
-            });
         </script>
     </body>
 </html>
