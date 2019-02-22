@@ -4,9 +4,12 @@ from constants import *
 def a_menu():
     message_table = {}
     items = []
-    menu_list = A_MENU_VAR_ITEMS
+    menu_list = A_MENU_VAR_ITEMS_ID
     for key in menu_list.keys():
-        items.append(key)
+        temp = []
+        temp.append(key)
+        temp.append(menu_list[key])
+        items.append(temp)
 
     message_table[ITEMS_VAR] = items
 

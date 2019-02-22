@@ -2,8 +2,10 @@ from flask import Flask, render_template, request
 from flask import jsonify
 import ui_handler
 import json
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/', methods=['POST'])
@@ -33,6 +35,7 @@ def handle_request():
     elif action == 'details':
         params = req.get('params')
         json_response = jsonify(ui_handler.details(params))
+
 
     return json_response
 

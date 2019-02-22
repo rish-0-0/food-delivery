@@ -3,7 +3,6 @@ C_MENU_VAR = 'c_menu'
 ITEMS_VAR = 'items'
 A_MENU_VAR_ITEMS = {
     'Veg Triple Rice (Rs.55)' : 55,
-    'ABCDFEF': 30
 }
 C_MENU_VAR_ITEMS = {
     'Veg Triple Rice (Rs.55)': 55
@@ -20,3 +19,6 @@ ROOM_VAR = 'room'
 PHONE_VAR = 'phone'
 ORDER_ID_VAR = 'order_id'
 PAYMENT_MODE_VAR = 'payment_mode'
+A_MENU_VAR_ITEMS_ID = {
+    1 : 'Veg Triple Rice (Rs.55)',
+}
