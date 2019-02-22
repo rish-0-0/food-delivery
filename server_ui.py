@@ -28,9 +28,13 @@ def handle_request():
     elif action == 'c_menu':
         json_response = jsonify(ui_handler.c_menu())
 
-    elif action == 'order_dets':
+    elif action == 'order_dets_save':
         params = req.get('params')
-        json_response = jsonify(ui_handler.order_dets(params))
+        json_response = jsonify(ui_handler.order_save(params))
+
+    #elif action == 'order_dets':
+        #params = req.get('params')
+        #json_response = jsonify(ui_handler.order_dets(params))
 
     elif action == 'details':
         params = req.get('params')
