@@ -13,32 +13,7 @@
                     <button class="orderButton" id="submit" type='button'>Confirm and Order</button>
                 </div>
                 <div class="col-lg-8" id="A-menu">
-                    <div class="container">
-                        <div class="item" id="xyz">
-                            <p>Item of ID: xyz</p>
-                            <p>Name of Item: name yO</p>
-                            <button type='button' class='addButton' onclick="push()">Add!</button>
-                        </div>
-                        Yo
-                    </div>
-                    <div class="container">
-                        <!-- <div class="menu-item">
-                            <span>Checkbox</span><span>Title</span>
-                        </div> -->
-                        Yo
-                    </div>
-                    <div class="container">
-                        <!-- <div class="menu-item">
-                            <span>Checkbox</span><span>Title</span>
-                        </div> -->
-                        Yo
-                    </div>
-                    <div class="container">
-                        <!-- <div class="menu-item">
-                            <span>Checkbox</span><span>Title</span>
-                        </div> -->
-                        Yo
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -74,27 +49,50 @@
                         }
                     });
                     // document.write(item);
+                console.log(items);
                 console.log("HERE");
-
-            });
-            //TODO: Order()
-            //TODO: Push()
-            console.log(items);
-
-            //write push function
-            function push(id) {
-                items.push(menu.id);
-            }
-            order = {"items": items} //JSON
-            //Send post request 
-            const url="/";
-            $(document).ready(function() {
+                for(var i=0;i<items.length;++i) {
+                    $('<div class="food">'+items[i]+'<button type="button" class="add"'+'id=\"'+items[i].split()[0]+'\"'+'</div>').appendTo('#A-menu');
+                }
+                //Now let's make a counter
+                order = {}
+                for(var i=0;i<items.length;++i) {
+                    order[items[i]]=0;
+                }
+                let flag = false;
                 $('#submit').click(function() {
-                    $.post(url,order,function(data,status) {
-                        alert("Data: "+data+"\nStatus: "+status);
-                    });
+                    flag = true;
                 });
+                while(!flag) {
+                    $('#'+items[i]).click(function() {
+                        order[items[i]]++;
+                    });
+                    $('#submit').click(function() {
+                        flag = true;
+                    });
+                }
+                let supply = [];
+                for(const [key, value] of Object.entries(order)) {
+                    if(value>0) {
+                        supply.push([key,value]);
+                    }
+                }
+                menu = {'command':'order_dets','params':supply};
+                menu = JSON.stringify(menu);
+                $.ajax({
+                    url: 'http://10.30.8.75:7050/',
+                    type: 'POST',
+                    dataType:'json',
+                    data:menu,
+                    success: function(msg) {
+                        console.log("Order Sent");
+                    }
+                });
+
             });
+            // order = {"items": items} //JSON
+
+            //Send post request 
         </script>
     </body>
 </html>
