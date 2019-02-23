@@ -30,6 +30,8 @@
         <script>
             //Receive menu
 
+            const server="http://10.30.23.145:7050";
+
             let orderIt = function (id) {
                     let x = id;
                     x = parseInt(x);
@@ -63,7 +65,7 @@
                     let item="";
                     console.log('FICL');
                     $.ajax({
-                        url: 'http://10.30.23.145:7050/',
+                        url: server, //server
                         type: 'POST',
                         dataType:'json',
                         data:menu,
@@ -102,7 +104,7 @@
                                                                 'params':{'items': order,'menu':'a_menu'}};
                                 supply= JSON.stringify(supply);
                                 $.ajax({
-                                        url: 'http://10.30.23.145:7050/',
+                                        url: server,
                                         type: 'POST',
                                         dataType:'json',
                                         data:supply,
