@@ -9,11 +9,16 @@
     <body>
         <div class="container" id="full-page">
             <div class="row">
-                <div class="col-lg-4 d-sm-block" id="your-cart">
-                    <p style="display:block" id="body">Your cart is empty</p>
-                    <button class="orderButton" id="submit" type='button'>Confirm and Order</button>
+                <div class="col-lg-6">
+                    <!-- <p style="display:block" id="body">Your cart is empty</p> -->
+                    <h1 class="text-center">Your Cart</h1>
+                    <div class="container" id="your-cart">
+
+                    </div>
+                    <button class="btn btn-primary" id="submit" type='button'>Confirm and Order</button>
                 </div>
-                <div class="col-lg-8" id="A-menu">
+                <div class="col-lg-6" id="A-menu">
+                    <h1 class="text-center">A-menu</h1>
                     
                 </div>
             </div>
@@ -33,7 +38,7 @@
                     console.log('ORDERING');
                     order[items[x][1]]++;
                     console.log(order[items[x][1]]);
-                                $('<div class="food"'+'id=\"'+items[x][0]+'\">'+items[x][1]+'<button type="button" onclick="DeleteIt(this.id)" class="add"'+'id=\"'+items[x][0]+'\">REMOVE</button>'+'</div>').appendTo('#your-cart');
+                                $('<div class="food"'+'id=\"'+items[x][0]+'\">'+items[x][1]+'<button class="btn btn-danger" type="button" onclick="DeleteIt(this.id)" class="add"'+'id=\"'+items[x][0]+'\">REMOVE</button>'+'</div>').appendTo('#your-cart');
                 };
             let DeleteIt = function(id) {
                     let x = id;
@@ -58,7 +63,7 @@
                     let item="";
                     console.log('FICL');
                     $.ajax({
-                        url: 'http://10.30.8.75:7050/',
+                        url: 'http://10.30.23.145:7050/',
                         type: 'POST',
                         dataType:'json',
                         data:menu,
@@ -79,7 +84,7 @@
 
                             for(let i=0;i<items.length;i++) {
                                 console.log("LOOP");
-                                $('<div class="food"'+'id=\"'+items[i][0]+'\">'+items[i][1]+'<button type="button" onclick="orderIt(this.id)" class="add"'+'id=\"'+items[i][0]+'\">ADD</button>'+'</div>').appendTo('#A-menu');
+                                $('<div class="food"'+'id=\"'+items[i][0]+'\">'+items[i][1]+'<button type="button" class="btn btn-success" onclick="orderIt(this.id)" class="add"'+'id=\"'+items[i][0]+'\">ADD</button>'+'</div>').appendTo('#A-menu');
                                 console.log(items[i][0],items[i][1]);
                             }
                             console.log("LOOP BROKE");
@@ -97,7 +102,7 @@
                                                                 'params':{'items': order,'menu':'a_menu'}};
                                 supply= JSON.stringify(supply);
                                 $.ajax({
-                                        url: 'http://10.30.8.75:7050/',
+                                        url: 'http://10.30.23.145:7050/',
                                         type: 'POST',
                                         dataType:'json',
                                         data:supply,
