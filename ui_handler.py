@@ -4,9 +4,12 @@ from constants import *
 def a_menu():
     message_table = {}
     items = []
-    menu_list = A_MENU_VAR_ITEMS
+    menu_list = A_MENU_VAR_ITEMS_ID
     for key in menu_list.keys():
-        items.append(key)
+        temp = []
+        temp.append(key)
+        temp.append(menu_list[key])
+        items.append(temp)
 
     message_table[ITEMS_VAR] = items
 
@@ -37,21 +40,8 @@ def details(params):
 
 
     return message_table
-def order_dets(params):
+"""def order_dets(params):
     message_table = {}
-
-    #reads the params received from the UI
-    menu_name = params[MENU_VAR]
-    items_list = params[ITEMS_VAR]
-
-    #calculates the final cost and total number of items to be packed
-    initial_cost, final_cost, del_quantity = cost_calculator(items_list,menu_name)
-
-    #generates and saves order id
-    order_id = gen_order_id()
-
-    #writes the order details to a unique txt file based on order id
-    details_file_writer(order_id,final_cost,del_quantity)
 
     message_table[INITIAL_COST_VAR] = initial_cost
     message_table[FINAL_COST_VAR] = final_cost
@@ -59,7 +49,7 @@ def order_dets(params):
     message_table[PACKING_CHARGE_VAR] = int(del_quantity * PACKING_CHARGE)
     message_table[ORDER_ID_VAR] = order_id
 
-    return message_table
+    return message_table"""
 
 def cost_calculator(items_list,menu_name):
     #checks which mess
@@ -110,3 +100,23 @@ def per_details_file_writer(order_id,name,room,phone,pay):
     text_file.write(phone)
     text_file.write(pay)
     text_file.close()
+# TODO: MESSAGE SUCCESSFUL FOR SAVE {message: "successfull"}
+def order_save(params):
+    message_table = {}
+
+    # reads the params received from the UI
+    menu_name = params[MENU_VAR]
+    items_list = params[ITEMS_VAR]
+
+    # calculates the final cost and total number of items to be packed
+    #initial_cost, final_cost, del_quantity = cost_calculator(items_list, menu_name)
+
+    # generates and saves order id
+    #order_id = gen_order_id()
+
+    # writes the order details to a unique txt file based on order id
+    #details_file_writer(order_id, final_cost, del_quantity)
+
+    message_table['message'] = 'success'
+
+    return message_table
