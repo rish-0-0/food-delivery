@@ -50,44 +50,44 @@
                     });
                     // document.write(item);
                 console.log(items);
-                console.log("HERE");
-                for(var i=0;i<items.length;++i) {
-                    $('<div class="food">'+items[i]+'<button type="button" class="add"'+'id=\"'+items[i].split()[0]+'\"'+'</div>').appendTo('#A-menu');
-                }
-                //Now let's make a counter
-                order = {}
-                for(var i=0;i<items.length;++i) {
-                    order[items[i]]=0;
-                }
-                let flag = false;
-                $('#submit').click(function() {
-                    flag = true;
-                });
-                while(!flag) {
-                    $('#'+items[i]).click(function() {
-                        order[items[i]]++;
-                    });
-                    $('#submit').click(function() {
-                        flag = true;
-                    });
-                }
-                let supply = [];
-                for(const [key, value] of Object.entries(order)) {
-                    if(value>0) {
-                        supply.push([key,value]);
-                    }
-                }
-                menu = {'command':'order_dets','params':supply};
-                menu = JSON.stringify(menu);
-                $.ajax({
-                    url: 'http://10.30.8.75:7050/',
-                    type: 'POST',
-                    dataType:'json',
-                    data:menu,
-                    success: function(msg) {
-                        console.log("Order Sent");
-                    }
-                });
+                // console.log("HERE");
+                // for(var i=0;i<items.length;++i) {
+                //     $('<div class="food">'+items[i]+'<button type="button" class="add"'+'id=\"'+items[i].split()[0]+'\"'+'</div>').appendTo('#A-menu');
+                // }
+                // //Now let's make a counter
+                // order = {}
+                // for(var i=0;i<items.length;++i) {
+                //     order[items[i]]=0;
+                // }
+                // let flag = false;
+                // $('#submit').click(function() {
+                //     flag = true;
+                // });
+                // while(!flag) {
+                //     $('#'+items[i]).click(function() {
+                //         order[items[i]]++;
+                //     });
+                //     $('#submit').click(function() {
+                //         flag = true;
+                //     });
+                // }
+                // let supply = [];
+                // for(const [key, value] of Object.entries(order)) {
+                //     if(value>0) {
+                //         supply.push([key,value]);
+                //     }
+                // }
+                // menu = {'command':'order_dets','params':supply};
+                // menu = JSON.stringify(menu);
+                // $.ajax({
+                //     url: 'http://10.30.8.75:7050/',
+                //     type: 'POST',
+                //     dataType:'json',
+                //     data:menu,
+                //     success: function(msg) {
+                //         console.log("Order Sent");
+                //     }
+                // });
 
             });
             // order = {"items": items} //JSON
