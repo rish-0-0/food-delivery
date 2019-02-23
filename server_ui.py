@@ -3,6 +3,8 @@ from flask import jsonify
 import ui_handler
 import json
 from flask_cors import CORS
+import utils_nosql
+from constants import *
 
 app = Flask(__name__)
 CORS(app)
@@ -32,9 +34,9 @@ def handle_request():
         params = req.get('params')
         json_response = jsonify(ui_handler.order_save(params))
 
-    #elif action == 'order_dets':
-        #params = req.get('params')
-        #json_response = jsonify(ui_handler.order_dets(params))
+    elif action == 'order_dets':
+        params = req.get('params')
+        json_response = jsonify(ui_handler.order_dets(params))
 
     elif action == 'details':
         params = req.get('params')
@@ -55,4 +57,16 @@ def render_static(page_name):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=7050)
+    utils_nosql.drop_col()
+    params_to_be_inserted = {ORDER_ID_VAR: 0,
+                             NAME_VAR: '',
+                             ROOM_VAR: '',
+                             PHONE_VAR: '',
+                             PAYMENT_MODE_VAR: '',
+                             PAYMENT_ID_VAR: '',
+                             INITIAL_COST_VAR: 1,
+                             FINAL_COST_VAR: 2,
+                             PACKING_CHARGE_VAR: (2 * PACKING_CHARGE),
+                             }
+    utils_nosql.insert_into_db(params_to_be_inserted)
+    app.run(host='0.0.0.0', port=80)

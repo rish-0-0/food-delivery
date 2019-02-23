@@ -1,4 +1,5 @@
 from constants import *
+import utils_nosql
 
 
 def a_menu():
@@ -28,30 +29,35 @@ def c_menu():
     return message_table
 
 def details(params):
-    message_table = {}
 
     name = params[NAME_VAR]
     room = params[ROOM_VAR]
     phone = params[PHONE_VAR]
     order_id = params[ORDER_ID_VAR]
     pay_mode = params[PAYMENT_MODE_VAR]
+    pay_id = params[PAYMENT_ID_VAR]
 
-    per_details_file_writer(order_id,name,room,phone,pay_mode)
+    utils_nosql.uptdate_in_db(order_id,{NAME_VAR:name})
+    utils_nosql.uptdate_in_db(order_id, {ROOM_VAR: room})
+    utils_nosql.uptdate_in_db(order_id, {PHONE_VAR: phone})
+    utils_nosql.uptdate_in_db(order_id, {PAYMENT_MODE_VAR: pay_mode})
+    utils_nosql.uptdate_in_db(order_id, {PAYMENT_ID_VAR: pay_id})
 
+    return order_id
 
-    return message_table
-"""def order_dets(params):
-    message_table = {}
+def order_dets(params):
+    req = {}
+    order_id = params['order_id']
+    list_var = utils_nosql.query_from_db()
+    for item in list_var:
+        if item[ORDER_ID_VAR] == order_id:
+            req = item
 
-    message_table[INITIAL_COST_VAR] = initial_cost
-    message_table[FINAL_COST_VAR] = final_cost
-    message_table[DELIVERY_CHARGE_VAR] = DELIVERY_CHARGE
-    message_table[PACKING_CHARGE_VAR] = int(del_quantity * PACKING_CHARGE)
-    message_table[ORDER_ID_VAR] = order_id
+    return req
 
-    return message_table"""
+def cost_calculator(items_list_ui,menu_name):
+    items_list = []
 
-def cost_calculator(items_list,menu_name):
     #checks which mess
     if menu_name == A_MENU_VAR:
         menu_list = A_MENU_VAR_ITEMS
@@ -59,6 +65,10 @@ def cost_calculator(items_list,menu_name):
         menu_list = C_MENU_VAR_ITEMS
     initial_cost = 0
     del_quantity = 0
+
+    for value in items_list_ui.items():
+        temp = list(value)
+        items_list.append(temp)
 
     #loops through each item ordered by user and adds corresponding cost
     for item in items_list:
@@ -76,31 +86,12 @@ def cost_calculator(items_list,menu_name):
     return initial_cost,final_cost,del_quantity
 
 def gen_order_id():
-    order_id_file = open('./text_documents/order_id.txt', 'r')
-    order_id = len(order_id_file.readline())
-    order_id_file.close()
-    order_id_file = open('./text_documents/order_id.txt', 'w')
-    order_id_file.write(order_id)
-    order_id_file.close()
+    order_id = 0
+    x = utils_nosql.query_from_db()
+    order_id = len(x)
 
     return order_id
 
-def details_file_writer(order_id,final_cost,del_quantity):
-    text_file_name = 'order_dets_%s.txt' % (str(order_id))
-    text_file = open(text_file_name, 'w')
-    text_file.write(final_cost)
-    text_file.write(del_quantity * PACKING_CHARGE)
-    text_file.close()
-
-def per_details_file_writer(order_id,name,room,phone,pay):
-    text_file_name = 'order_dets_%s.txt' % (str(order_id))
-    text_file = open(text_file_name, 'w')
-    text_file.write(name)
-    text_file.write(room)
-    text_file.write(phone)
-    text_file.write(pay)
-    text_file.close()
-# TODO: MESSAGE SUCCESSFUL FOR SAVE {message: "successfull"}
 def order_save(params):
     message_table = {}
 
@@ -109,14 +100,24 @@ def order_save(params):
     items_list = params[ITEMS_VAR]
 
     # calculates the final cost and total number of items to be packed
-    #initial_cost, final_cost, del_quantity = cost_calculator(items_list, menu_name)
+    initial_cost, final_cost, del_quantity = cost_calculator(items_list, menu_name)
 
     # generates and saves order id
-    #order_id = gen_order_id()
+    order_id = gen_order_id()
 
-    # writes the order details to a unique txt file based on order id
-    #details_file_writer(order_id, final_cost, del_quantity)
+    params_to_be_inserted = {ORDER_ID_VAR: order_id,
+                             NAME_VAR: '',
+                             ROOM_VAR: '',
+                             PHONE_VAR: '',
+                             PAYMENT_MODE_VAR: '',
+                             PAYMENT_ID_VAR: '',
+                             INITIAL_COST_VAR:initial_cost,
+                             FINAL_COST_VAR:final_cost,
+                             PACKING_CHARGE_VAR: (del_quantity*PACKING_CHARGE),
+                             }
+    utils_nosql.insert_into_db(params_to_be_inserted)
 
     message_table['message'] = 'success'
+    message_table['order_id'] = int(order_id)
 
     return message_table
