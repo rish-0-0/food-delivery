@@ -87,7 +87,6 @@ def form_han():
 
     ui_handler.details(order_id,name,room,phone,pay_mode,pay_id)
 
-    print(request.form)
     return render_template('success.html')
 
 

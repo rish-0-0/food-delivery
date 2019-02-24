@@ -113,27 +113,24 @@ def details(order_id,name,room,phone,pay_mode,pay_id):
     return order_id
 
 def database_request():
-    new_items_list = {}
     items_var = []
     message_table = {}
     list_var = utils_nosql.query_from_db()
     for items in list_var:
-        print(items)
         temp = []
         temp.append(items[ORDER_ID_VAR])
+        temp.append(items[FINAL_COST_VAR])
         temp.append(items[NAME_VAR])
         temp.append(items[ROOM_VAR])
         temp.append(items[PHONE_VAR])
         temp.append(items[PAYMENT_MODE_VAR])
         temp.append(items[PAYMENT_ID_VAR])
         items_list = items[ITEMS_VAR]
-        for key, value in items_list.items():
-            if value == 1:
-                new_items_list[key] = value
-        temp.append(new_items_list)
+        temp.append(items_list)
         items_var.append(temp)
 
     message_table[ITEMS_VAR] = items_var
+    print(message_table)
 
     return message_table
 
