@@ -34,12 +34,10 @@ def order_save(params):
     # reads the params received from the UI
     menu_name = params[MENU_VAR]
     items_list = params[ITEMS_VAR]
+    order_id = int(params['ID'])
 
     # calculates the final cost and total number of items to be packed
     initial_cost, final_cost, del_quantity = cost_calculator(items_list, menu_name)
-
-    # generates and saves order id
-    order_id = gen_order_id()
 
     params_to_be_inserted = {ORDER_ID_VAR: order_id,
                              MENU_VAR:menu_name,
@@ -56,13 +54,12 @@ def order_save(params):
     utils_nosql.insert_into_db(params_to_be_inserted)
 
     message_table['message'] = 'success'
-    message_table[ORDER_ID_UI_VAR] = int(order_id)
 
     return message_table
 
 def order_dets(params):
     req = {}
-    order_id = params[ORDER_ID_UI_VAR]
+    order_id = params
     list_var = utils_nosql.query_from_db()
     for items in list_var:
         if items[ORDER_ID_VAR] == order_id:
@@ -70,40 +67,25 @@ def order_dets(params):
 
     return req
 
-def order_prices(params):
-    menu_name = ''
-    temp_dic = {}
-    temp = {}
-    req = {}
-    order_id = params[ORDER_ID_UI_VAR]
-    list_var = utils_nosql.query_from_db()
-    for items in list_var:
-        if items[ORDER_ID_VAR] == order_id:
-            menu_name = items[MENU_VAR]
-            temp_dic = items[ITEMS_VAR]
+# def order_prices(params):
+#     req = {}
+#     order_id = params
+#     list_var = utils_nosql.query_from_db()
+#     for items in list_var:
+#         if items[ORDER_ID_VAR] == order_id:
+#             req['food'] = items[INITIAL_COST_VAR]
+#
+#     print(req)
+#     return req
 
-    if menu_name == A_MENU_VAR:
-        menu_list = A_MENU_VAR_ITEMS
-    else:
-        menu_list = C_MENU_VAR_ITEMS
-
-    for key in temp_dic.items():
-        temp_list = list(key)
-        temp[temp_list[0]] = menu_list[temp_list[0]]
-
-    req[ITEMS_VAR] = temp
-    print(req)
-
-    return req
 
 def calculated_prices(params):
     req = {}
     temp = []
-    order_id = params[ORDER_ID_UI_VAR]
+    order_id = params
     list_var = utils_nosql.query_from_db()
     for items in list_var:
         if items[ORDER_ID_VAR] == order_id:
-            temp.append(items[INITIAL_COST_VAR])
             temp.append(items[PACKING_CHARGE_VAR])
             temp.append(DELIVERY_CHARGE)
             temp.append(items[FINAL_COST_VAR])
@@ -156,10 +138,10 @@ def cost_calculator(items_list_ui,menu_name):
 
     return initial_cost,final_cost,del_quantity
 
-def gen_order_id():
-    order_id = 0
-    x = utils_nosql.query_from_db()
-    order_id = len(x)
-
-    return order_id
+# def gen_order_id():
+#     order_id = 0
+#     x = utils_nosql.query_from_db()
+#     order_id = len(x)
+#
+#     return order_id
 

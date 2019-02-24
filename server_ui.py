@@ -43,21 +43,22 @@ def handle_request():
     elif action == 'c_menu':
         json_response = jsonify(ui_handler.c_menu())
 
+
     elif action == 'order_dets_save':
         params = req.get('params')
         json_response = jsonify(ui_handler.order_save(params))
 
-    elif action == 'order_dets_saved_request':
+    elif action == 'order_dets':
         params = req.get('params')
-        json_response = jsonify(ui_handler.order_dets(params))
+        json_response = jsonify(ui_handler.order_dets(int(params)))
 
-    elif action == 'order_prices':
-        params = req.get('params')
-        json_response = jsonify(ui_handler.order_prices(params))
+    # elif action == 'order_prices':
+    #     params = req.get('params')
+    #     json_response = jsonify(ui_handler.order_prices(int(params)))
 
     elif action == 'calculated_prices':
         params =req.get('params')
-        json_response = jsonify(ui_handler.calculated_prices(params))
+        json_response = jsonify(ui_handler.calculated_prices(int(params)))
 
     return json_response
 

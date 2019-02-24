@@ -103,6 +103,7 @@
                     console.log('Items received');
                     //msg = {"items": {'food':int,'food2':int,'food3':int}}
                     items = msg.items;
+                    console.log(items);
                     //iterate through the items dictionary
                     for(const [key,value] of Object.entries(items)) {
                         //key is the name and value is the quantity
