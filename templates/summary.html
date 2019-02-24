@@ -7,9 +7,15 @@
 
     <title>Your Order Summary</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="/styles.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <script>
+        let orderID = localStorage.getItem('orderId');
+        function genId() {
+            document.getElementById('order_id').value = orderID;
+        }
+    </script>
 </head>
-<body>
+<body onload="genId()">
     <div class="container">
         <div class="row">
             <div class="col-lg-6" id="summary-part">
@@ -34,7 +40,11 @@
             <div class="col-lg-6">
                 <!-- Customer Info -->
                 <!-- REMEMBER TO ADD THE SERVER URL IN ACTION BAR -->
-                <form class="form-horizontal" action="http://10.30.23.145:7050/form-handler" method="POST">
+                <form class="form-horizontal" action="http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com/form-handler" method="POST">
+                    <div class="form-group">
+                        <label for="order_id" id="label_id">OrderID: </label>
+                        <input type="text" id="order_id" name="order_id" class="form-control" readonly>
+                    </div>
                     <div class="form-group">
                         <label for="order_id"></label>
                     </div>
@@ -86,9 +96,13 @@
         //Receive Order Summary
         //Server setup
         const server = "http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com"; //CHANGE THIS
-        let orderID = localStorage.getItem('orderId'); 
-        $('#myOrderId').value = orderID;
-        console.log('hidden form data: ',$('#myOrderId').value);
+        // let orderID = localStorage.getItem('orderId');
+        console.log('order id: ',orderID);
+        let ele = $('#order_id');
+        // function genId() {
+        //     $("#label_id").innerHTML+=''+ orderID;
+        // }
+        console.log('order id sent in the form: ',ele.value);
         console.log('orderID',orderID);
         console.log("YAY");
         $.ajaxSetup({
@@ -100,6 +114,7 @@
         $(document).ready(function() {
             console.log("Document is Ready");
             //SENDING FIRST REQUEST
+            ele.value = ''+orderID;
             $.ajax({
                 url: server,
                 type: 'POST',

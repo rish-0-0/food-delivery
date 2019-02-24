@@ -8,14 +8,16 @@ from constants import *
 
 utils_nosql.drop_col()
 params_to_be_inserted = {ORDER_ID_VAR: 0,
+                             MENU_VAR:'this is test',
                              NAME_VAR: '',
                              ROOM_VAR: '',
                              PHONE_VAR: '',
                              PAYMENT_MODE_VAR: '',
                              PAYMENT_ID_VAR: '',
-                             INITIAL_COST_VAR: 1,
-                             FINAL_COST_VAR: 2,
-                             PACKING_CHARGE_VAR: (2 * PACKING_CHARGE),
+                             ITEMS_VAR : {},
+                             INITIAL_COST_VAR:0,
+                             FINAL_COST_VAR:0,
+                             PACKING_CHARGE_VAR: 0,
                              }
 utils_nosql.insert_into_db(params_to_be_inserted)
 
@@ -37,7 +39,6 @@ def handle_request():
 
     if action == 'a_menu':
         response = ui_handler.a_menu()
-        print(response)
         json_response = jsonify(response)
 
     elif action == 'c_menu':
@@ -74,6 +75,22 @@ def index():
 @app.route('/<string:page_name>/')
 def render_static(page_name):
     return render_template('%s' % page_name)
+
+@app.route('/form-handler',methods=['POST'])
+def form_han():
+    # order_id = request.form.get(ORDER_ID_UI_VAR)
+    # name = request.form[NAME_VAR]
+    # room = request.form[ROOM_VAR]
+    # phone = request.form[PHONE_VAR]
+    # pay_mode = request.form[PAYMENT_MODE_VAR]
+    # pay_id = request.form[PAYMENT_ID_VAR]
+    #
+    # print(int(order_id))
+    #
+    # ui_handler.details(order_id,name,room,phone,pay_mode,pay_id)
+
+    print(request.form)
+    return render_template('success.html')
 
 
 if __name__ == '__main__':
