@@ -86,12 +86,14 @@
         //Receive Order Summary
         //Server setup
         const server = "http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com"; //CHANGE THIS
+        let orderID = localStorage.getItem('orderId'); 
+        console.log('orderID',orderID);
         console.log("YAY");
         $.ajaxSetup({
             contentType: "application/json; charset=utf-8"
         });
         let items = {};
-        let request = {'command':'order_dets_saved_request'};
+        let request = {'command':'order_dets','params':orderID};
         request = JSON.stringify(request);
         $(document).ready(function() {
             console.log("Document is Ready");
@@ -113,7 +115,7 @@
                     }
                     //Now raise another request for the price of each item ordered
                     console.log('FIRST REQUEST RAISED');
-                    request = {'command':'order_prices'};
+                    request = {'command':'order_prices','params':orderID};
                     request = JSON.stringify(request);
                     let prices = {};
                     $.ajax({
@@ -132,7 +134,7 @@
                             }
                             console.log('Finished updating prices table');
                             //Another request for packaging and delivering and final cost
-                            request = {'command':'calculated_prices'};
+                            request = {'command':'calculated_prices','params':orderID};
                             request = JSON.stringify(request);
                             let final_prices = {};
                             $.ajax({
