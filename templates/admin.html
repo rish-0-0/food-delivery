@@ -50,12 +50,22 @@
                     success: function(msg) {
                         console.log('success on admin site');
                         orders = msg.items; //msg = {"items":[[id,name,room,phone,payment_mode,payment_id,items],[id,name,room,phone,payment_mode,payment_id,items]]}
-                        let string = "";
                         for(let i=0;i<orders.length;++i) {
                             console.log(orders[i]);
                             // $('<tr><td>'+orders[i][0]+'</td>'+'<td>'+orders[i][1]+'</td>'+'<td>'+orders[i][2]+'</td></tr>');
-                            // for(let j=0;j<)
-
+                            let string = "";
+                            let j;
+                            for(j=0;j<orders[i].length-1;++j) {
+                                string+= "<td>"+orders[i][j]+"</td>";
+                                string+="<td>";
+                                if(j==6) {
+                                    for(const [key,value] of Object.entries(orders[i][j])) {
+                                        string+='<div class="entries>"'+key+': Quant: '+value+'</div>';
+                                    }
+                                    string+="</td>";
+                                }
+                            }
+                            $(string).appendTo('admin-table');
                         }
                     }
                 });
