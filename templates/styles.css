@@ -1,0 +1,13 @@
+.index-section {
+    color:inherit;
+    outline: none;
+    text-decoration: none;
+}
+.index-section:hover {
+    text-decoration:none;
+    color:inherit;
+}
+.jumbotron:hover {
+    background-color: aquamarine;
+    transition: 1.2s;
+}
