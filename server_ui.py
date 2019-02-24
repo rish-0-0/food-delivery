@@ -78,16 +78,14 @@ def render_static(page_name):
 
 @app.route('/form-handler',methods=['POST'])
 def form_han():
-    # order_id = request.form.get(ORDER_ID_UI_VAR)
-    # name = request.form[NAME_VAR]
-    # room = request.form[ROOM_VAR]
-    # phone = request.form[PHONE_VAR]
-    # pay_mode = request.form[PAYMENT_MODE_VAR]
-    # pay_id = request.form[PAYMENT_ID_VAR]
-    #
-    # print(int(order_id))
-    #
-    # ui_handler.details(order_id,name,room,phone,pay_mode,pay_id)
+    order_id = int(request.form[ORDER_ID_UI_VAR])
+    name = request.form[NAME_VAR]
+    room = request.form[ROOM_VAR]
+    phone = request.form[PHONE_VAR]
+    pay_mode = request.form[PAYMENT_MODE_VAR]
+    pay_id = request.form[PAYMENT_ID_VAR]
+
+    ui_handler.details(order_id,name,room,phone,pay_mode,pay_id)
 
     print(request.form)
     return render_template('success.html')

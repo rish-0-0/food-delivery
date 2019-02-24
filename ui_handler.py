@@ -20,9 +20,12 @@ def a_menu():
 def c_menu():
     message_table = {}
     items = []
-    menu_list = C_MENU_VAR_ITEMS
+    menu_list = C_MENU_VAR_ITEMS_ID
     for key in menu_list.keys():
-        items.append(key)
+        temp = []
+        temp.append(key)
+        temp.append(menu_list[key])
+        items.append(temp)
 
     message_table[ITEMS_VAR] = items
 
@@ -101,7 +104,6 @@ def calculated_prices(params):
     return req
 
 def details(order_id,name,room,phone,pay_mode,pay_id):
-    print(name)
     utils_nosql.uptdate_in_db(order_id,{NAME_VAR:name})
     utils_nosql.uptdate_in_db(order_id, {ROOM_VAR: room})
     utils_nosql.uptdate_in_db(order_id, {PHONE_VAR: phone})
