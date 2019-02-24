@@ -72,7 +72,7 @@
                         <input type="text" class="form-control" id="payment_id" name="payment_id">
                     </div>     
                     <div class="form-group">
-                        <input type="submit" value="submit" class="btn btn-primary">
+                        <input type="submit" class="btn btn-primary" value="Submit" id="summarise">
                     </div>  
                     <!--ON SUBMIT BUTTON CLICK FORM DATA IS SENT OVER HTTPS THROUGH 
                     POST REQUEST. FORM HANDLING WILL BE DONE BY PYTHON, THERE MUST BE A
@@ -140,7 +140,7 @@
                             data: request,
                             success: function(msg) {
                                 console.log('RECEIVING FINAL COST');
-                                //msg is in the form: {"items": [packaging_price,delivering_price,final_price]} note: array is returned
+                                //msg is in the form: {"items": [init-price,packaging_price,delivering_price,final_price]} note: array is returned
                                 final_prices = msg.items;
                                 for(let i=0;i<final_prices.length;i++) {
                                     console.log("ITERATING THROUGH FINAL PRICES",final_prices[i]);

@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row">
                 <div class="container" id="table-container">
-                    <table class="table" id="admin-table"><tr><th>Order #ID</th><th>Recipient</th><th>Order Total Cost</th></tr></table>
+                    <table class="table" id="admin-table"><tr><th>Order #ID</th><th>Recipient</th><th>Address</th><th>Phone</th><th>Payment Mode</th><th></th><th>Payment(UPI) ID</th><th>ITEMS</th></tr></table>
                 </div>
             </div>
             <div class="row">
@@ -28,7 +28,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <link href='styles.css' rel="stylesheet">
+        <link href='/styles.css' rel="stylesheet">
         <script>
             //JS FOR ADMIN PAGE
             const server="http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com"; //CHANGE THIS
@@ -49,10 +49,23 @@
                     data: request,
                     success: function(msg) {
                         console.log('success on admin site');
-                        orders = msg.items; //msg = {"items":[[orderID,recipient,cost],[orderID,recipient,cost]]}
+                        orders = msg.items; //msg = {"items":[[id,name,room,phone,payment_mode,payment_id,items],[id,name,room,phone,payment_mode,payment_id,items]]}
                         for(let i=0;i<orders.length;++i) {
                             console.log(orders[i]);
-                            $('<tr><td>'+orders[i][0]+'</td>'+'<td>'+orders[i][1]+'</td>'+'<td>'+orders[i][2]+'</td></tr>');
+                            // $('<tr><td>'+orders[i][0]+'</td>'+'<td>'+orders[i][1]+'</td>'+'<td>'+orders[i][2]+'</td></tr>');
+                            let string = "";
+                            let j;
+                            for(j=0;j<orders[i].length-1;++j) {
+                                string+= "<td>"+orders[i][j]+"</td>";
+                                string+="<td>";
+                                if(j==6) {
+                                    for(const [key,value] of Object.entries(orders[i][j])) {
+                                        string+='<div class="entries>"'+key+': Quant: '+value+'</div>';
+                                    }
+                                    string+="</td>";
+                                }
+                            }
+                            $(string).appendTo('admin-table');
                         }
                     }
                 });
