@@ -129,13 +129,16 @@
                                     console.log("ITERATING THROUGH FINAL PRICES",final_prices[i]);
                                     let x="";
                                     if(i===0) {
-                                        x = "Packaging Price";
+                                        x = "Initial Price:";
                                     }
                                     else if(i===1) {
-                                        x = "Delivering Price";
+                                        x = "Packaging Price:";
                                     }
                                     else if(i===2) {
-                                        x = "Final Price";
+                                        x = "Delivering Price:";
+                                    }
+                                    else if(i==3) {
+                                        x = "Final Price:";
                                     }
                                     $('<tr><td>'+x+'</td><td>'+final_prices[i]+'</td></tr>').appendTo('#final-cost');
                                 }
