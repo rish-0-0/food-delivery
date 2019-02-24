@@ -42,26 +42,22 @@
                         <input type='text' class="form-control" id="room" name="room" required>
                     </div>
                     <div class="form-group">
-                        <label for="contact">Contact Number</label>
-                        <input type="text" class="form-control" id="contact" name="contact" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number Connected With Payment Mode</label>
-                        <input type='text' class="form-control" id="phone" name="phone" required>
+                        <label for="phone">Contact Number</label>
+                        <input type="text" class="form-control" id="phone" name="phone" required>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name='mode' value="PayTM" required>PayTM
+                            <input type="radio" name='payment_mode' value="PayTM" required>PayTM
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="mode" value="Google"required>Google Pay(Tez)
+                            <input type="radio" name="payment_mode" value="Google" required>Google Pay(Tez)
                         </label>
                     </div>
                     <div class="form-group">
-                        <label for="upid">UPI ID</label>
-                        <input type="text" class="form-control" id="upid" name="upid">
+                        <label for="payment_id">UPI ID/Phone Number Connected With Payment Mode</label>
+                        <input type="text" class="form-control" id="payment_id" name="payment_id">
                     </div>     
                     <div class="form-group">
                         <input type="submit" value="submit" class="btn btn-primary">

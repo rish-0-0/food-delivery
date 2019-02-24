@@ -28,14 +28,91 @@ def c_menu():
 
     return message_table
 
-def details(params):
+def order_save(params):
+    message_table = {}
 
-    name = params[NAME_VAR]
-    room = params[ROOM_VAR]
-    phone = params[PHONE_VAR]
-    order_id = params[ORDER_ID_VAR]
-    pay_mode = params[PAYMENT_MODE_VAR]
-    pay_id = params[PAYMENT_ID_VAR]
+    # reads the params received from the UI
+    menu_name = params[MENU_VAR]
+    items_list = params[ITEMS_VAR]
+
+    # calculates the final cost and total number of items to be packed
+    initial_cost, final_cost, del_quantity = cost_calculator(items_list, menu_name)
+
+    # generates and saves order id
+    order_id = gen_order_id()
+
+    params_to_be_inserted = {ORDER_ID_VAR: order_id,
+                             MENU_VAR:menu_name,
+                             NAME_VAR: '',
+                             ROOM_VAR: '',
+                             PHONE_VAR: '',
+                             PAYMENT_MODE_VAR: '',
+                             PAYMENT_ID_VAR: '',
+                             ITEMS_VAR : items_list,
+                             INITIAL_COST_VAR:initial_cost,
+                             FINAL_COST_VAR:final_cost,
+                             PACKING_CHARGE_VAR: (del_quantity*PACKING_CHARGE),
+                             }
+    utils_nosql.insert_into_db(params_to_be_inserted)
+
+    message_table['message'] = 'success'
+    message_table[ORDER_ID_UI_VAR] = int(order_id)
+
+    return message_table
+
+def order_dets(params):
+    req = {}
+    order_id = params[ORDER_ID_UI_VAR]
+    list_var = utils_nosql.query_from_db()
+    for items in list_var:
+        if items[ORDER_ID_VAR] == order_id:
+            req[ITEMS_VAR] = items[ITEMS_VAR]
+
+    return req
+
+def order_prices(params):
+    menu_name = ''
+    temp_dic = {}
+    temp = {}
+    req = {}
+    order_id = params[ORDER_ID_UI_VAR]
+    list_var = utils_nosql.query_from_db()
+    for items in list_var:
+        if items[ORDER_ID_VAR] == order_id:
+            menu_name = items[MENU_VAR]
+            temp_dic = items[ITEMS_VAR]
+
+    if menu_name == A_MENU_VAR:
+        menu_list = A_MENU_VAR_ITEMS
+    else:
+        menu_list = C_MENU_VAR_ITEMS
+
+    for key in temp_dic.items():
+        temp_list = list(key)
+        temp[temp_list[0]] = menu_list[temp_list[0]]
+
+    req[ITEMS_VAR] = temp
+    print(req)
+
+    return req
+
+def calculated_prices(params):
+    req = {}
+    temp = []
+    order_id = params[ORDER_ID_UI_VAR]
+    list_var = utils_nosql.query_from_db()
+    for items in list_var:
+        if items[ORDER_ID_VAR] == order_id:
+            temp.append(items[INITIAL_COST_VAR])
+            temp.append(items[PACKING_CHARGE_VAR])
+            temp.append(DELIVERY_CHARGE)
+            temp.append(items[FINAL_COST_VAR])
+
+    req[ITEMS_VAR] = temp
+
+    return req
+
+def details(order_id,name,room,phone,pay_mode,pay_id):
 
     utils_nosql.uptdate_in_db(order_id,{NAME_VAR:name})
     utils_nosql.uptdate_in_db(order_id, {ROOM_VAR: room})
@@ -45,15 +122,9 @@ def details(params):
 
     return order_id
 
-def order_dets(params):
-    req = {}
-    order_id = params['order_id']
-    list_var = utils_nosql.query_from_db()
-    for item in list_var:
-        if item[ORDER_ID_VAR] == order_id:
-            req = item
 
-    return req
+
+############################custom designed functions######################
 
 def cost_calculator(items_list_ui,menu_name):
     items_list = []
@@ -76,7 +147,7 @@ def cost_calculator(items_list_ui,menu_name):
         item_quan = item[1]
         temp_cost = int(menu_list[item_name]) * int(item_quan)
         initial_cost = initial_cost + temp_cost
-        if item_name == 'Veg Triple Rice (Rs.55)':
+        if item_name == 'Veg Triple Rice (Rs 55)':
             del_quantity = (item_quan*2) + del_quantity
         else:
             del_quantity = item_quan + del_quantity
@@ -92,32 +163,3 @@ def gen_order_id():
 
     return order_id
 
-def order_save(params):
-    message_table = {}
-
-    # reads the params received from the UI
-    menu_name = params[MENU_VAR]
-    items_list = params[ITEMS_VAR]
-
-    # calculates the final cost and total number of items to be packed
-    initial_cost, final_cost, del_quantity = cost_calculator(items_list, menu_name)
-
-    # generates and saves order id
-    order_id = gen_order_id()
-
-    params_to_be_inserted = {ORDER_ID_VAR: order_id,
-                             NAME_VAR: '',
-                             ROOM_VAR: '',
-                             PHONE_VAR: '',
-                             PAYMENT_MODE_VAR: '',
-                             PAYMENT_ID_VAR: '',
-                             INITIAL_COST_VAR:initial_cost,
-                             FINAL_COST_VAR:final_cost,
-                             PACKING_CHARGE_VAR: (del_quantity*PACKING_CHARGE),
-                             }
-    utils_nosql.insert_into_db(params_to_be_inserted)
-
-    message_table['message'] = 'success'
-    message_table['order_id'] = int(order_id)
-
-    return message_table
