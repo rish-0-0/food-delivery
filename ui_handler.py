@@ -41,7 +41,7 @@ def order_save(params):
     initial_cost, final_cost, del_quantity = cost_calculator(items_list, menu_name)
 
     for key,value in items_list.items():
-        if value == 1:
+        if value > 0:
             new_items_list[key] = value
 
     params_to_be_inserted = {ORDER_ID_VAR: order_id,
@@ -91,6 +91,7 @@ def calculated_prices(params):
     list_var = utils_nosql.query_from_db()
     for items in list_var:
         if items[ORDER_ID_VAR] == order_id:
+            temp.append(items[INITIAL_COST_VAR])
             temp.append(items[PACKING_CHARGE_VAR])
             temp.append(DELIVERY_CHARGE)
             temp.append(items[FINAL_COST_VAR])
@@ -100,7 +101,7 @@ def calculated_prices(params):
     return req
 
 def details(order_id,name,room,phone,pay_mode,pay_id):
-
+    print(name)
     utils_nosql.uptdate_in_db(order_id,{NAME_VAR:name})
     utils_nosql.uptdate_in_db(order_id, {ROOM_VAR: room})
     utils_nosql.uptdate_in_db(order_id, {PHONE_VAR: phone})
@@ -115,11 +116,13 @@ def database_request():
     message_table = {}
     list_var = utils_nosql.query_from_db()
     for items in list_var:
+        print(items)
         temp = []
+        temp.append(items[ORDER_ID_VAR])
         temp.append(items[NAME_VAR])
         temp.append(items[ROOM_VAR])
         temp.append(items[PHONE_VAR])
-        temp.append(items[PAYMENT_ID_VAR])
+        temp.append(items[PAYMENT_MODE_VAR])
         temp.append(items[PAYMENT_ID_VAR])
         items_list = items[ITEMS_VAR]
         for key, value in items_list.items():

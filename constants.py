@@ -27,7 +27,7 @@ A_MENU_VAR_ITEMS_ID = {
     3 : 'Plain Dosa (Rs 25)',
 }
 C_MENU_VAR_ITEMS_ID = {
-    'Veg Triple Rice (Rs 55)': 55
+    1 : 'Veg Triple Rice (Rs 55)'
 }
 DATABASE_VAR = 'food_delivery_database'
 ORDER_ID_UI_VAR = 'order_id'
