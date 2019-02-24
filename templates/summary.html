@@ -7,6 +7,7 @@
 
     <title>Your Order Summary</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -112,59 +113,37 @@
                     }
                     //Now raise another request for the price of each item ordered
                     console.log('FIRST REQUEST RAISED');
-                    request = {'command':'order_prices','params':orderID};
-                    request = JSON.stringify(request);
-                    let prices = {};
-                    $.ajax({
-                        url: server,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: request,
-                        success: function(msg) {
-                            console.log('ITEMS WITH PRICES RECEIVED');
-                            //msg is in the form of {'items':{'food':price}}
-                            prices = msg.items;
-                            console.log("prices dictionary assigned");
-                            for(const [key,value] of Object.entries(prices)) {
-                                $('<tr><td>'+key+'</td><td>'+value+'</tr>').appendTo('#final-cost');
-                                console.log('pRint inside prices iteration loop',key,value);
-                            }
-                            console.log('Finished updating prices table');
-                            //Another request for packaging and delivering and final cost
-                            request = {'command':'calculated_prices','params':orderID};
-                            request = JSON.stringify(request);
-                            let final_prices = {};
-                            $.ajax({
-                                url: server,
-                                type:'POST',
-                                dataType:'json',
-                                data: request,
-                                success: function(msg) {
-                                    console.log('RECEIVING FINAL COST');
-                                    //msg is in the form: {"items": [packaging_price,delivering_price,final_price]} note: array is returned
-                                    //note: length of array is fixed at 3 please
-                                    final_prices = msg.items;
-                                    for(let i=0;i<final_prices.length;i++) {
-                                        console.log("ITERATING THROUGH FINAL PRICES",final_prices[i]);
-                                        let x="";
-                                        if(i===0) {
-                                            x = "Packaging Price";
-                                        }
-                                        else if(i===1) {
-                                            x = "Delivering Price";
-                                        }
-                                        else if(i===2) {
-                                            x = "Final Price";
-                                        }
-                                        $('<tr><td>'+x+'</td><td>'+final_prices[i]+'</td></tr>').appendTo('#final-cost');
+                    request = {'command':'calculated_prices','params':orderID};
+                        request = JSON.stringify(request);
+                        let final_prices = [];
+                        $.ajax({
+                            url: server,
+                            type:'POST',
+                            dataType:'json',
+                            data: request,
+                            success: function(msg) {
+                                console.log('RECEIVING FINAL COST');
+                                //msg is in the form: {"items": [packaging_price,delivering_price,final_price]} note: array is returned
+                                final_prices = msg.items;
+                                for(let i=0;i<final_prices.length;i++) {
+                                    console.log("ITERATING THROUGH FINAL PRICES",final_prices[i]);
+                                    let x="";
+                                    if(i===0) {
+                                        x = "Packaging Price";
                                     }
-                                } //Success ends here for packaging,delivering and final cost
-                            });
-                        } // Success ends here for someone
-                    });
-                } //Success attribute ends of the request requesting for (item,quantity)
-            });
-        });
+                                    else if(i===1) {
+                                        x = "Delivering Price";
+                                    }
+                                    else if(i===2) {
+                                        x = "Final Price";
+                                    }
+                                    $('<tr><td>'+x+'</td><td>'+final_prices[i]+'</td></tr>').appendTo('#final-cost');
+                                }
+                            } //Success ends here for packaging,delivering and final cost
+                        });
+                    } // Success ends here for someone
+                });
+            }); //Success attribute ends of the request requesting for (item,quantity)
     </script>
 </body>
 </html>
