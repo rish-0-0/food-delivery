@@ -60,6 +60,9 @@ def handle_request():
         params =req.get('params')
         json_response = jsonify(ui_handler.calculated_prices(int(params)))
 
+    elif action == 'database_request':
+        json_response = jsonify(ui_handler.database_request())
+
     return json_response
 
 
@@ -71,19 +74,6 @@ def index():
 @app.route('/<string:page_name>/')
 def render_static(page_name):
     return render_template('%s' % page_name)
-
-@app.route('/form-handler',methods=['POST'])
-def form():
-    name = request.form[NAME_VAR]
-    room = request.form[ROOM_VAR]
-    phone = request.form[PHONE_VAR]
-    pay_mode = request.form[PAYMENT_MODE_VAR]
-    pay_id = request.form[PAYMENT_ID_VAR]
-
-    ui_handler.details(order_id,name,room,phone,pay_mode,pay_id)
-
-    json_res = jsonify({})
-    return json_res
 
 
 if __name__ == '__main__':

@@ -29,6 +29,7 @@ def c_menu():
     return message_table
 
 def order_save(params):
+    new_items_list = {}
     message_table = {}
 
     # reads the params received from the UI
@@ -39,6 +40,10 @@ def order_save(params):
     # calculates the final cost and total number of items to be packed
     initial_cost, final_cost, del_quantity = cost_calculator(items_list, menu_name)
 
+    for key,value in items_list.items():
+        if value == 1:
+            new_items_list[key] = value
+
     params_to_be_inserted = {ORDER_ID_VAR: order_id,
                              MENU_VAR:menu_name,
                              NAME_VAR: '',
@@ -46,7 +51,7 @@ def order_save(params):
                              PHONE_VAR: '',
                              PAYMENT_MODE_VAR: '',
                              PAYMENT_ID_VAR: '',
-                             ITEMS_VAR : items_list,
+                             ITEMS_VAR : new_items_list,
                              INITIAL_COST_VAR:initial_cost,
                              FINAL_COST_VAR:final_cost,
                              PACKING_CHARGE_VAR: (del_quantity*PACKING_CHARGE),
@@ -103,6 +108,10 @@ def details(order_id,name,room,phone,pay_mode,pay_id):
     utils_nosql.uptdate_in_db(order_id, {PAYMENT_ID_VAR: pay_id})
 
     return order_id
+
+def database_request():
+    message_table = {}
+    list_var = utils_nosql.query_from_db()
 
 
 
