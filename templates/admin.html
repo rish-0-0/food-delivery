@@ -50,14 +50,6 @@
                     success: function(msg) {
                         console.log('success on admin site');
                         orders = msg.items; //msg = {"items":[[id,name,room,phone,payment_mode,payment_id,items],[id,name,room,phone,payment_mode,payment_id,items]]}
-<<<<<<< HEAD
-                        let string = "";
-                        for(let i=0;i<orders.length;++i) {
-                            console.log(orders[i]);
-                            // $('<tr><td>'+orders[i][0]+'</td>'+'<td>'+orders[i][1]+'</td>'+'<td>'+orders[i][2]+'</td></tr>');
-                            // for(let j=0;j<)
-
-=======
 
                         for(let i=0;i<orders.length;++i) {
                             console.log(orders[i]);
@@ -88,7 +80,6 @@
                             let final="</tr>";
                             string+=final;
                             console.log(string);
->>>>>>> upstream/master
                         }
                     }
                 });
