@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name='viewport' content="width=device-width,initial-scale=1.0">
-        <title>A Menu</title>
+        <title>C Menu</title>
         <link type="image/png" rel="icon" href="../static/food.png">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link href="../static/styles.css" rel="stylesheet">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="col order-first" id="A-menu">
-                    <h1 class="text-center">A-menu</h1>
+                    <h1 class="text-center">C-menu</h1>
                     <table class="table" id="A-menu-table">
                         <tr><th>ITEM</th><th>SELECT</th></tr>
                     </table>
@@ -69,7 +69,7 @@
             };
             console.log("YAY");
             let items = [];
-            let menu={'command':'a_menu'};
+            let menu={'command':'c_menu'};
             menu = JSON.stringify(menu);
             console.log("YAY");
             $.ajaxSetup({
@@ -113,7 +113,7 @@
                             // console.log(supply);
                             $('#submit').click(function(){
                                 let supply = {'command':'order_dets_save',
-                                                                'params':{'items': order,'menu':'a_menu','ID':orderID}};
+                                                                'params':{'items': order,'menu':'c_menu','ID':orderID}};
                                 supply= JSON.stringify(supply);
                                 $.ajax({
                                         url: server,
