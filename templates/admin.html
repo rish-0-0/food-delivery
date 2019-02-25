@@ -55,12 +55,16 @@
                             // $('<tr><td>'+orders[i][0]+'</td>'+'<td>'+orders[i][1]+'</td>'+'<td>'+orders[i][2]+'</td></tr>');
                             let string = "";
                             let j;
-                            for(j=0;j<orders[i].length-1;++j) {
+                            for(j=0;j<orders[i].length;++j) {
                                 string+= "<td>"+orders[i][j]+"</td>";
-                                string+="<td>";
+                                console.log(orders[i][j]);
+                                console.log(string);
+                                
                                 if(j==6) {
-                                    for(const [key,value] of Object.entries(orders[i][j])) {
-                                        string+='<div class="entries>"'+key+': Quant: '+value+'</div>';
+                                    string+="<td>";
+                                    for(const [key,value] of Object.entries(orders[i][6])) {
+                                        string+='<div class="entries">'+key+': Quant: '+value+'</div>';
+                                        console.log(string);
                                     }
                                     string+="</td>";
                                 }
