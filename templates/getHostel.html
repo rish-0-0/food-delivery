@@ -27,7 +27,8 @@
         </style>
         <script>
             //JS for getHostel.html
-            const orderID = localStorage.getItem('orderID');
+            console.log('bro');
+            const orderID = localStorage.getItem('orderId');
             const server = "http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com";
             function genId() {
                 document.getElementById('order_id').value = orderID;
@@ -73,7 +74,7 @@
                     <input name="roomNo" type="text" class="form-control" id="roomNo" required />
                 </div>
                 <div class="form-group">
-                    <input id="submitBtn" disabled type="submit" class="btn btn-success" value="Submit"/>
+                    <input id="submitBtn" type="submit" class="btn btn-success" value="Submit" disabled/>
                 </div>
             </form>
 
@@ -105,7 +106,7 @@
                         //ORDER id
                         //msg is {'items': String}
                         console.log('Connection Status: ',msg.items);
-                        $('#submitBtn').disabled=false;
+                        $('#submitBtn').removeAttr("disabled");
                         $('#submitBtn').click(function() {
                             console.log("HOPEFULLY THIS ISNT TOO QUICK");
                             location.href = "/getHostel.html"; 
