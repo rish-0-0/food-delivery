@@ -41,7 +41,7 @@ def order_save(params):
     order_id = int(params['ID'])
 
     # calculates the final cost and total number of items to be packed
-    initial_cost, final_cost, del_quantity = cost_calculator(items_list, menu_name)
+    initial_cost, final_cost, del_quantity,del_charge = cost_calculator(items_list, menu_name)
 
     for key,value in items_list.items():
         if value > 0:
@@ -58,6 +58,7 @@ def order_save(params):
                              INITIAL_COST_VAR:initial_cost,
                              FINAL_COST_VAR:final_cost,
                              PACKING_CHARGE_VAR: (del_quantity*PACKING_CHARGE),
+                             DELIVERY_CHARGE_VAR : del_charge,
                              }
     utils_nosql.insert_into_db(params_to_be_inserted)
 
@@ -96,7 +97,7 @@ def calculated_prices(params):
         if items[ORDER_ID_VAR] == order_id:
             temp.append(items[INITIAL_COST_VAR])
             temp.append(items[PACKING_CHARGE_VAR])
-            temp.append(DELIVERY_CHARGE)
+            temp.append(int(items[DELIVERY_CHARGE_VAR]))
             temp.append(items[FINAL_COST_VAR])
 
     req[ITEMS_VAR] = temp
@@ -118,16 +119,19 @@ def database_request():
     list_var = utils_nosql.query_from_db()
     for items in list_var:
         temp = []
-        temp.append(items[ORDER_ID_VAR])
-        temp.append(items[FINAL_COST_VAR])
-        temp.append(items[NAME_VAR])
-        temp.append(items[ROOM_VAR])
-        temp.append(items[PHONE_VAR])
-        temp.append(items[PAYMENT_MODE_VAR])
-        temp.append(items[PAYMENT_ID_VAR])
-        items_list = items[ITEMS_VAR]
-        temp.append(items_list)
-        items_var.append(temp)
+        if items[NAME_VAR] == '':
+            continue
+        else:
+            temp.append(items[MENU_VAR])
+            temp.append(items[FINAL_COST_VAR])
+            temp.append(items[NAME_VAR])
+            temp.append(items[ROOM_VAR])
+            temp.append(items[PHONE_VAR])
+            temp.append(items[PAYMENT_MODE_VAR])
+            temp.append(items[PAYMENT_ID_VAR])
+            items_list = items[ITEMS_VAR]
+            temp.append(items_list)
+            items_var.append(temp)
 
     message_table[ITEMS_VAR] = items_var
     print(message_table)
@@ -160,14 +164,23 @@ def cost_calculator(items_list_ui,menu_name):
         item_quan = item[1]
         temp_cost = int(menu_list[item_name]) * int(item_quan)
         initial_cost = initial_cost + temp_cost
-        if item_name == 'Veg Triple Rice (Rs 55)':
+        if item_name == 'Veg Triple Rice (Rs 55)' or item_name == 'Chicken Triple Rice (Rs 75)' or item_name =='Chicken Triple Fried Rice (Rs 76)' or item_name == 'Veg Triple Fried Rice (Rs 55)':
             del_quantity = (item_quan*2) + del_quantity
+        elif item_name in DRINKS_LIST:
+            del_quantity = del_quantity
         else:
             del_quantity = item_quan + del_quantity
 
-    final_cost = initial_cost + (del_quantity * PACKING_CHARGE) + DELIVERY_CHARGE
+    total_intial_cost = initial_cost + (del_quantity * PACKING_CHARGE)
 
-    return initial_cost,final_cost,del_quantity
+    if total_intial_cost <150:
+        delivery_charge = DELIVERY_CHARGE
+        final_cost = initial_cost + (del_quantity * PACKING_CHARGE) + delivery_charge
+    else:
+        delivery_charge = (0.1 * total_intial_cost)
+        final_cost = initial_cost + (del_quantity * PACKING_CHARGE) + delivery_charge
+
+    return initial_cost,final_cost,del_quantity,delivery_charge
 
 # def gen_order_id():
 #     order_id = 0
