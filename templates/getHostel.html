@@ -9,7 +9,7 @@
         <style>
             .form-inline {
                 position:absolute;
-                left:24%;
+                left:9%;
                 margin-left:auto;
                 margin-right:auto;
             }
@@ -29,13 +29,21 @@
             //JS for getHostel.html
             const orderID = localStorage.getItem('orderID');
             const server = "http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com";
+            function genId() {
+                document.getElementById('order_id').value = orderID;
+                console.log('Executed');
+            }
         </script>
     </head>    
-    <body>
+    <body onload="genId()">
         
         <div class="container-fluid" id="hostel">
             <h1 class="text-center">Few Details</h1>
             <form class='form-inline' action="http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com/hostelroom">
+                <div class="form-group">
+                    <label for="order_id" id="label_id">OrderID: </label>
+                    <input type="text" id="order_id" name="order_id" class="form-control" readonly>
+                </div>
 
                 <div class="form-group">
                     <!-- Dropdown-->
@@ -80,7 +88,7 @@
         <script>
              //CHANGE THIS IF SERVER CHANGES
             console.log('orderID',orderID);
-            const request = {'command': 'validateOrderID', 'params': orderID};
+            let request = {'command': 'validateOrderID', 'params': orderID};
             request = JSON.stringify(request);
             $.ajaxSetup({
                 contentType: "application/json; charset=utf-8"
@@ -98,12 +106,8 @@
                         //msg is {'items': String}
                         console.log('Connection Status: ',msg.items);
                         $('#submitBtn').disabled=false;
-                        $('#submitBtn').click({
-                            console.log('BYE BYE FROM HOSTEL');
-                            console.log("Have a look at these while we wait for form");
-                            console.log("The form data should be sent that's all");
-                            console.log('Now let"s go where should');
-                            console.log("That is to summary.html");
+                        $('#submitBtn').click(function() {
+                            console.log("HOPEFULLY THIS ISNT TOO QUICK");
                             location.href = "/getHostel.html"; 
                         });
                     }
