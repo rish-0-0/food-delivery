@@ -53,6 +53,9 @@ def handle_request():
         params = req.get('params')
         json_response = jsonify(ui_handler.order_dets(int(params)))
 
+    elif action == 'validateOrderID':
+        json_response = jsonify({'items':'sexy_man'})
+
     # elif action == 'order_prices':
     #     params = req.get('params')
     #     json_response = jsonify(ui_handler.order_prices(int(params)))
@@ -80,16 +83,25 @@ def render_static(page_name):
 def form_han():
     order_id = int(request.form[ORDER_ID_UI_VAR])
     name = request.form[NAME_VAR]
-    room = request.form[ROOM_VAR]
     phone = request.form[PHONE_VAR]
     pay_mode = request.form[PAYMENT_MODE_VAR]
     pay_id = request.form[PAYMENT_ID_VAR]
 
-    ui_handler.details(order_id,name,room,phone,pay_mode,pay_id)
+    ui_handler.details(order_id,name,phone,pay_mode,pay_id)
 
     return render_template('success.html')
+
+@app.route('/hostelroom',methods=['POST'])
+def hosroom():
+    order_id = int(request.form[ORDER_ID_UI_VAR])
+    hostel = request.form['HOSTEL']
+    room = request.form[ROOM_VAR]
+
+    ui_handler.hostel_details(order_id,hostel,room)
+
+    return render_template('summary.html')
 
 
 if __name__ == '__main__':
 
-    app.run(host='0.0.0.0', port=7050)
+    app.run(host='0.0.0.0', port=80)

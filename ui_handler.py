@@ -41,7 +41,7 @@ def order_save(params):
     order_id = int(params['ID'])
 
     # calculates the final cost and total number of items to be packed
-    initial_cost, final_cost, del_quantity,del_charge = cost_calculator(items_list, menu_name)
+    initial_cost, del_quantity = cost_calculator(items_list, menu_name)
 
     for key,value in items_list.items():
         if value > 0:
@@ -50,15 +50,16 @@ def order_save(params):
     params_to_be_inserted = {ORDER_ID_VAR: order_id,
                              MENU_VAR:menu_name,
                              NAME_VAR: '',
+                             'hostel': '',
                              ROOM_VAR: '',
                              PHONE_VAR: '',
                              PAYMENT_MODE_VAR: '',
                              PAYMENT_ID_VAR: '',
                              ITEMS_VAR : new_items_list,
                              INITIAL_COST_VAR:initial_cost,
-                             FINAL_COST_VAR:final_cost,
+                             FINAL_COST_VAR:0,
                              PACKING_CHARGE_VAR: (del_quantity*PACKING_CHARGE),
-                             DELIVERY_CHARGE_VAR : del_charge,
+                             DELIVERY_CHARGE_VAR : 0,
                              }
     utils_nosql.insert_into_db(params_to_be_inserted)
 
@@ -104,12 +105,30 @@ def calculated_prices(params):
 
     return req
 
-def details(order_id,name,room,phone,pay_mode,pay_id):
+def details(order_id,name,phone,pay_mode,pay_id):
     utils_nosql.uptdate_in_db(order_id,{NAME_VAR:name})
-    utils_nosql.uptdate_in_db(order_id, {ROOM_VAR: room})
     utils_nosql.uptdate_in_db(order_id, {PHONE_VAR: phone})
     utils_nosql.uptdate_in_db(order_id, {PAYMENT_MODE_VAR: pay_mode})
     utils_nosql.uptdate_in_db(order_id, {PAYMENT_ID_VAR: pay_id})
+
+    return order_id
+
+def hostel_details(order_id,hostel,room):
+    utils_nosql.uptdate_in_db(order_id,{'hostel':hostel})
+    utils_nosql.uptdate_in_db(order_id, {ROOM_VAR: room})
+
+    list_var = utils_nosql.query_from_db()
+
+    for items in list_var:
+        if int(items[ORDER_ID_VAR]) == order_id:
+            menu_name = items[MENU_VAR]
+            intial_cost = items[INITIAL_COST_VAR]
+            pack_char = items[PACKING_CHARGE_VAR]
+
+    final_cost,delivery_charge = final_cost_calc(menu_name,intial_cost,pack_char,hostel)
+
+    utils_nosql.uptdate_in_db(order_id, {FINAL_COST_VAR: final_cost})
+    utils_nosql.uptdate_in_db(order_id, {DELIVERY_CHARGE_VAR: delivery_charge})
 
     return order_id
 
@@ -171,16 +190,45 @@ def cost_calculator(items_list_ui,menu_name):
         else:
             del_quantity = item_quan + del_quantity
 
-    total_intial_cost = initial_cost + (del_quantity * PACKING_CHARGE)
+    return initial_cost,del_quantity
 
-    if total_intial_cost <150:
-        delivery_charge = DELIVERY_CHARGE
-        final_cost = initial_cost + (del_quantity * PACKING_CHARGE) + delivery_charge
+def final_cost_calc(menu_name,initial_cost,packing_charge,hostel):
+    total_intial_cost = initial_cost + packing_charge
+
+    if hostel in BRACKET1:
+        delivery_charge_var = DELIVERY_CHARGE_1
+        del_per = DELIVER_PERCENT_1
+    elif hostel in BRACKET2:
+        delivery_charge_var = DELIVERY_CHARGE_2
+        del_per = DELIVER_PERCENT_2
+    elif hostel in BRACKET3:
+        delivery_charge_var = DELIVERY_CHARGE_3
+        del_per = DELIVER_PERCENT_3
     else:
-        delivery_charge = (0.1 * total_intial_cost)
-        final_cost = initial_cost + (del_quantity * PACKING_CHARGE) + delivery_charge
+        delivery_charge_var = 10
+        del_per = 0.1
 
-    return initial_cost,final_cost,del_quantity,delivery_charge
+    if total_intial_cost < 150:
+        delivery_charge = delivery_charge_var
+    else:
+        delivery_charge = (del_per * total_intial_cost)
+
+    if menu_name == A_MENU_VAR:
+        if hostel in C_SIDE:
+            cross = EXTRA_DELIVERY_CHARGE
+        else:
+            cross = 0
+    else:
+        if hostel in A_SIDE:
+            cross = EXTRA_DELIVERY_CHARGE
+        else:
+            cross = 0
+
+    delivery_charge = delivery_charge + cross
+
+    final_cost = initial_cost + packing_charge + delivery_charge
+
+    return final_cost,delivery_charge
 
 # def gen_order_id():
 #     order_id = 0

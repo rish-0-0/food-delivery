@@ -1,7 +1,13 @@
 A_MENU_VAR = 'a_menu'
 C_MENU_VAR = 'c_menu'
 ITEMS_VAR = 'items'
-DELIVERY_CHARGE = 10
+DELIVERY_CHARGE_1 = 10
+DELIVERY_CHARGE_2 = 13
+DELIVERY_CHARGE_3 = 15
+DELIVER_PERCENT_1 = 0.1
+DELIVER_PERCENT_2 = 0.12
+DELIVER_PERCENT_3 = 0.14
+EXTRA_DELIVERY_CHARGE = 5
 PACKING_CHARGE = 5
 MENU_VAR = 'menu'
 INITIAL_COST_VAR = 'intitial_cost'
@@ -16,6 +22,13 @@ PAYMENT_ID_VAR = 'payment_id'
 DATABASE_VAR = 'food_delivery_database'
 ORDER_ID_UI_VAR = 'order_id'
 DELIVERY_CHARGE_VAR = 'delivery_charge'
+
+BRACKET1 = ['AH2','AH3','AH7','AH8','CH3','CH4','CH5','CH7']
+BRACKET2 = ['CH1','CH2','CH6','AH1','AH4','AH5']
+BRACKET3 = ['AH6','AH9']
+
+A_SIDE = ['AH1','AH2','AH3','AH4','AH5','AH6','AH7','AH8','AH9']
+C_SIDE = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7']
 
 ###############menus#################3
 
