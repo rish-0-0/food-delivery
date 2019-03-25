@@ -35,12 +35,19 @@
                 console.log('Executed');
             }
         </script>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-9756474100529648",
+            enable_page_level_ads: true
+          });
+        </script>
     </head>    
     <body onload="genId()">
         
         <div class="container-fluid" id="hostel">
             <h1 class="text-center">Hostel Details</h1>
-            <form class='form-inline' action="http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com/hostelroom">
+            <form class='form-inline' action="http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com/hostelroom" method="POST">
                 <div class="form-group">
                     <label for="order_id" id="label_id">OrderID: </label>
                     <input type="text" id="order_id" name="order_id" class="form-control" readonly>
@@ -70,8 +77,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for='roomNo'>Room: </label>
-                    <input name="roomNo" type="text" class="form-control" id="roomNo" required />
+                    <label for='room'>Room: </label>
+                    <input name="room" type="text" class="form-control" id="room" required />
                 </div>
                 <div class="form-group">
                     <input id="submitBtn" type="submit" class="btn btn-success" value="Submit" disabled/>
