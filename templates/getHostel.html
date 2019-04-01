@@ -29,7 +29,8 @@
             //JS for getHostel.html
             console.log('bro');
             const orderID = localStorage.getItem('orderId');
-            const server = "http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com";
+            //const server = "http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com";
+            const server = "http://localhost";
             function genId() {
                 document.getElementById('order_id').value = orderID;
                 console.log('Executed');
@@ -40,7 +41,7 @@
         
         <div class="container-fluid" id="hostel">
             <h1 class="text-center">Hostel Details</h1>
-            <form class='form-inline' action="http://ec2-13-232-249-4.ap-south-1.compute.amazonaws.com/hostelroom">
+            <form class='form-inline' action="http://localhost/hostelroom" method="POST">
                 <div class="form-group">
                     <label for="order_id" id="label_id">OrderID: </label>
                     <input type="text" id="order_id" name="order_id" class="form-control" readonly>
